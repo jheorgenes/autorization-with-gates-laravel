@@ -26,52 +26,47 @@ class AuthController extends Controller
 
     public function onlyAdmins()
     {
-        // // A forma incorreta de verificar a autorização
-        // if(Auth::user()->role !== 'admin'){
-        //     echo 'User não é admin.';
-        // } else {
-        //     echo 'Bem-vindo';
-        // }
-
-        // // A forma correta de verificar a autorização
-        // if(Gate::allows('user_is_admin')){
-        //     echo 'Bem-vindo';
-        // } else {
-        //     echo 'User não é admin.';
-        // }
-
-        // Outra forma correta de verificar a autorização
-        // O can método verifica se o usuário logado pode acessar a Gate especificada (que no caso é 'user_is_admin)
-        if(Auth::user()->can('user_is_admin')){
-            echo 'Bem-vindo';
-            return;
+        // A forma correta de verificar a autorização
+        if(Gate::allows('user_is_admin')){
+            echo 'Bem-vindo, admin';
+        } else {
+            echo 'NOK.';
         }
 
-        echo 'não autorizado';
+        // // Outra forma correta de verificar a autorização
+        // // O can método verifica se o usuário logado pode acessar a Gate especificada (que no caso é 'user_is_admin)
+        // if(Auth::user()->can('user_is_admin')){
+        //     echo 'Bem-vindo';
+        //     return;
+        // }
+
+        // echo 'não autorizado';
     }
 
     public function onlyUsers()
     {
         // // A forma correta de verificar a autorização
-        // if(Gate::allows('user_is_user')){
-        //     echo 'User é um usuário normal.';
-        // } else {
-        //     echo 'User é um usuário Admin';
-        // }
-
-        // // Método denies do gate é uma negativa
-        // if(Gate::denies('user_is_admin')){
-        //     echo 'Usuario logado é user';
-        // } else {
-        //     echo 'User é um admin';
-        // }
-
-        if(Auth::user()->can('user_is_user')){
-            //...
+        if(Gate::allows('user_is_user')){
+            echo 'Bem vindo, user';
+        } else {
+            echo 'NOK.';
         }
 
-        if(Auth::user()->cannot('user_is_admin')){
-            //...
+        // if(Auth::user()->can('user_is_user')){
+        //     //...
+        // }
+
+        // if(Auth::user()->cannot('user_is_admin')){
+        //     //...
+        // }
+    }
+
+    public function delete()
+    {
+        if(Auth::user()->can('user_can', 'delete')){
+            echo 'Eliminado';
+        } else {
+            return;
         }
     }
 }
